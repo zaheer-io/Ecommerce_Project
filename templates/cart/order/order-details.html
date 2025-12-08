@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+
+    {% for order in order_details %}
+    <div class="card shadow-sm mb-4 border-0" style="padding: 20px;">
+
+        <p class="fw-bold mb-1">Order No: {{ order.order_id }}</p>
+        <p class="text-muted mb-1">Ordered on: {{ order.order_date }}</p>
+        <p class="mb-1">Order Total: ₹{{ order.amount }}</p>
+        <p class="mb-3">Status: {{ order.delivery_status }}</p>
+
+        {% for item in order.products.all %}
+        <div class="d-flex align-items-start" style="gap: 20px;">
+
+            <img src="{{ item.product.product_image.url }}"
+                 alt="{{ item.product.product_name }}"
+                 style="width:150px; height:auto; border-radius:5px;">
+
+            <div>
+                <p class="fw-bold mb-1">Name: {{ item.product.product_name }}</p>
+                <p class="mb-1">Price: ₹{{ item.product.product_price }}</p>
+                <p class="mb-1">Qty: {{ item.quantity }}</p>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

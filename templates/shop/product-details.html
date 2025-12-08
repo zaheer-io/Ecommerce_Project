@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Freshshop - Ecommerce | Product Details {% endblock %}
+
+{% block extra_css %}
+    <style>
+        .image{
+            width: 100%;
+            max-width: 500px; 
+            height: auto;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="about-box-main">
+    <div class="container">
+        <div class="row">
+
+            <!-- Product Image -->
+            <div class="col-lg-6">
+                <div class="banner-frame">
+                    <img class="img-fluid image" src="{{ cur_product.product_image.url }}" alt="{{ cur_product.product_name }}">
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <h2 class="noo-sh-title-top fw-bold">{{ cur_product.product_name }}</h2>
+
+                <h4 class="mt-3">
+                    Price:
+                    <span class="text-success fw-bold">₹{{ cur_product.product_price }}</span>
+                </h4>
+
+                <p class="mt-4">
+                    {{ cur_product.product_description }}
+                </p>
+
+                <p class="mt-3">
+                    <strong>Category:</strong> {{ cur_product.category.category_name }}
+                </p>
+
+                <p class="mt-2">
+                    <strong>Stock:</strong>
+                    {% if cur_product.stock > 0 %}
+                        <span class="text-success fw-bold">{{ cur_product.stock }} available</span>
+                    {% else %}
+                        <span class="text-danger fw-bold">Out of Stock</span>
+                    {% endif %}
+                </p>
+
+                <p class="mt-2">
+                    <strong>Status:</strong>
+                    {% if cur_product.available %}
+                        <span class="text-success fw-bold">Available</span>
+                    {% else %}
+                        <span class="text-danger fw-bold">Not Available</span>
+                    {% endif %}
+                </p>
+
+                <!-- Add to Cart Button (Design Friendly) -->
+                <div class="mt-4">
+                    {% if user.is_superuser %}
+                        <a class="btn hvr-hover text-white px-4 py-2" href="{% url 'shop:add-stock' cur_product.id %}"> Add Stock </a>
+                    {% else %}
+                        {% if cur_product.stock > 0 %}
+                            <a class="btn hvr-hover text-white px-4 py-2" href="{% url 'cart:add-to-cart' cur_product.id %}"> Add to Cart </a>
+                        {% else %}
+                            <a class="btn hvr-hover text-danger px-4 py-2"> Out of Stock </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
